@@ -1,0 +1,11 @@
+__pycache__/
+
+*.pyc
+
+outputs/
+
+data/
+
+.env
+
+.ipynb_checkpoints/
