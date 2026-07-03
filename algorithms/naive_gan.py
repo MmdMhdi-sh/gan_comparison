@@ -117,5 +117,5 @@ class NaiveGAN(nn.Module):
             z = self.sample_noise(n_samples)
             
             images = self.generator(z)
-
+            images = images.cpu()
         return images

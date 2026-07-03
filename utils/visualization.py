@@ -13,6 +13,7 @@ def save_image_grid(images, epoch, out_dir="outputs", nrows=4):
     plt.figure(figsize=(4, 4))
     plt.axis("off")
     plt.title(f"Epoch {epoch}")
+    grid = grid.detach().cpu().numpy()
     plt.imshow(np.transpose(grid, (1, 2, 0)), cmap="gray")
     plt.savefig(f"{out_dir}/sample_epoch_{epoch:03d}.png", bbox_inches="tight")
     plt.close
