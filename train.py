@@ -1,0 +1,71 @@
+# =============================================
+# Imports
+# =============================================
+import torch
+
+from tqdm import tqdm
+
+from algorithms.naive_gan import NaiveGAN
+from data.datamodule import DataModule
+from utils.configs import load_config
+
+# =============================================
+# Device & Config
+# =============================================
+device = torch.device(
+    "cuda" if torch.cuda.is_available() 
+    else "cpu"
+)
+
+
+path = "configs/naive_gan.yaml"
+config = load_config(path)
+print(f"Using {device}\n"
+      f"Config loaded from {path}"
+)
+# =============================================
+# Data loaders
+# =============================================
+data_module = DataModule(config)
+
+data_module.setup()
+train_loader = data_module.train_dataloader()
+
+# =============================================
+# Model
+# =============================================
+model = NaiveGAN(
+    config=config, 
+    device=device
+)
+
+# =============================================
+# Training
+# =============================================
+def main():
+    print("=" * 50)
+    print(f"Training Starts ...")
+    num_epochs = config["epochs"]
+    for epoch in tqdm(
+        range(num_epochs),
+        desc="Training"
+    ):
+        epoch_d_loss = 0
+        epoch_g_loss = 0
+        for real_images, _ in train_loader:
+            d_loss, g_loss = model.train_step(real_images)
+
+            epoch_d_loss += d_loss
+            epoch_g_loss += g_loss
+
+        epoch_d_loss /= len(train_loader)
+        epoch_g_loss /= len(train_loader)
+
+        print(
+            f"Epoch [{epoch+1}/{num_epochs}] "
+            f"Discriminator Loss: {epoch_d_loss:.4f} "
+            f"Generator Loss: {epoch_g_loss:.4f}"
+        )
+
+if __name__ == "__main__":
+    main()

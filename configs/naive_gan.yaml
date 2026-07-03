@@ -1,9 +1,12 @@
 {
   "algorithm": "naive_gan",
 
+  "data_dir": "./data",
+
   "latent_dim": 100,
 
   "learning_rate": 1e-4,
   "momentum": 0.9,
   "batch_size": 32,
+  "epochs": 100
 }
