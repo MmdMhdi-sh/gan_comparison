@@ -2,6 +2,12 @@ __pycache__/
 
 *.pyc
 
+# Virtual environment
+venv/
+
+# Dataset
+data/MNIST/
+
 outputs/
 
 .env

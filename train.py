@@ -53,10 +53,10 @@ def main():
         epoch_d_loss = 0
         epoch_g_loss = 0
         for real_images, _ in train_loader:
-            d_loss, g_loss = model.train_step(real_images)
+            losses = model.train_step(real_images)
 
-            epoch_d_loss += d_loss
-            epoch_g_loss += g_loss
+            epoch_d_loss += losses["d_loss"]
+            epoch_g_loss += losses["g_loss"]
 
         epoch_d_loss /= len(train_loader)
         epoch_g_loss /= len(train_loader)

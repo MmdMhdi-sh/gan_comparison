@@ -2,9 +2,9 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from ..models.discriminator import Discriminator
-from ..models.generator import Generator
-from ..models.weights import initialize_weights
+from models.discriminator import Discriminator
+from models.generator import Generator
+from models.weights import initialize_weights
 
 class NaiveGAN(nn.Module):
     def __init__(self, config, device):
@@ -40,9 +40,16 @@ class NaiveGAN(nn.Module):
             device=self.device
         )
     
+    @staticmethod
+    def set_requires_grad(model, requires_grad):
+        for p in model.parameters():
+            p.requires_grad = requires_grad
+    
     def update_discriminator(self, real_images):
         self.discriminator.train()
         self.generator.train()
+
+        self.set_requires_grad(self.discriminator, True)
 
         real_images = real_images.to(self.device)
 
@@ -72,8 +79,7 @@ class NaiveGAN(nn.Module):
         self.generator.train()
         self.discriminator.train()
 
-        for p in self.discriminator.parameters():
-            p.requires_grad = False
+        self.set_requires_grad(self.discriminator, False)
 
         z = self.sample_noise(batch_size)
         fake_images = self.generator(z)
@@ -89,6 +95,8 @@ class NaiveGAN(nn.Module):
 
         self.g_optimizer.step()
 
+        self.set_requires_grad(self.discriminator, True)
+
         return g_loss.item()
 
     def train_step(self, real_images):
@@ -96,7 +104,10 @@ class NaiveGAN(nn.Module):
 
         g_loss = self.update_generator(real_images.size(0))
 
-        return d_loss, g_loss
+        return {
+            "d_loss":d_loss, 
+            "g_loss": g_loss
+        }
 
     # Generate fake images
     def generate(self, n_samples):
