@@ -4,7 +4,7 @@ import torch.optim as optim
 
 from ..models.discriminator import Discriminator
 from ..models.generator import Generator
-
+from ..models.weights import initialize_weights
 
 class NaiveGAN(nn.Module):
     def __init__(self, config, device):
@@ -13,6 +13,9 @@ class NaiveGAN(nn.Module):
 
         self.generator = Generator(config).to(device)
         self.discriminator = Discriminator().to(device)
+
+        initialize_weights(self.generator)
+        initialize_weights(self.discriminator)
 
         self.g_optimizer = optim.SGD(
             self.generator.parameters(),
@@ -68,7 +71,7 @@ class NaiveGAN(nn.Module):
     def update_generator(self, batch_size):
         self.generator.train()
         self.discriminator.train()
-        
+
         for p in self.discriminator.parameters():
             p.requires_grad = False
 
