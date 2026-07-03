@@ -31,12 +31,14 @@ class DataModule:
         return DataLoader(
             dataset=self.train_ds,
             batch_size=self.config["batch_size"],
-            shuffle=True
+            shuffle=True,
+            num_workers=4
         )
     
     def test_dataloader(self):
         return DataLoader(
             dataset=self.test_ds,
             batch_size=self.config["batch_size"],
-            shuffle=False
+            shuffle=False,
+            num_workers=4
         )

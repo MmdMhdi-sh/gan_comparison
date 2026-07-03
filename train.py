@@ -1,6 +1,8 @@
 # =============================================
 # Imports
 # =============================================
+import time 
+
 import torch
 
 from tqdm import tqdm
@@ -12,6 +14,8 @@ from utils.configs import load_config
 # =============================================
 # Device & Config
 # =============================================
+torch.backends.cudnn.benchmark = True
+
 device = torch.device(
     "cuda" if torch.cuda.is_available() 
     else "cpu"
@@ -43,6 +47,7 @@ model = NaiveGAN(
 # Training
 # =============================================
 def main():
+    start_time = time.time()
     print("=" * 50)
     print(f"Training Starts ...")
     num_epochs = config["epochs"]
@@ -64,7 +69,8 @@ def main():
         print(
             f"Epoch [{epoch+1}/{num_epochs}] "
             f"Discriminator Loss: {epoch_d_loss:.4f} "
-            f"Generator Loss: {epoch_g_loss:.4f}"
+            f"Generator Loss: {epoch_g_loss:.4f} "
+            f"Duration: {time.time()-start_time}"
         )
 
 if __name__ == "__main__":
