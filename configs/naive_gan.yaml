@@ -1,0 +1,9 @@
+{
+  "algorithm": "naive_gan",
+
+  "latent_dim": 100,
+
+  "learning_rate": 1e-4,
+  "momentum": 0.9,
+  "batch_size": 32,
+}
