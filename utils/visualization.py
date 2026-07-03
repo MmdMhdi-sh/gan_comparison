@@ -1,4 +1,4 @@
-from torchvision.utils import vutils
+import torchvision.utils as vutils
 
 import matplotlib.pyplot as plt
 import numpy as np
