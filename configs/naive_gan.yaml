@@ -2,6 +2,7 @@
   "algorithm": "naive_gan",
 
   "data_dir": "./data",
+  "num_workers": 2,
 
   "latent_dim": 100,
 

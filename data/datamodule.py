@@ -32,7 +32,7 @@ class DataModule:
             dataset=self.train_ds,
             batch_size=self.config["batch_size"],
             shuffle=True,
-            num_workers=4
+            num_workers=self.config["num_workers"]
         )
     
     def test_dataloader(self):
@@ -40,5 +40,5 @@ class DataModule:
             dataset=self.test_ds,
             batch_size=self.config["batch_size"],
             shuffle=False,
-            num_workers=4
+            num_workers=self.config["num_workers"]
         )
