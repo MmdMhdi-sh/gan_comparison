@@ -9,5 +9,5 @@
   "learning_rate": 0.001,
   "momentum": 0.5,
   "batch_size": 64,
-  "epochs": 30
+  "epochs": 100
 }
