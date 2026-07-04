@@ -9,7 +9,7 @@ import os
 # ==================================================
 def save_image_grid(images, epoch, out_dir="outputs", nrows=4):
     os.makedirs(out_dir, exist_ok=True)
-    grid = vutils.make_grid(images, nrow=nrows, normalize=True, value_range=(-1,1))
+    grid = vutils.make_grid(images, nrow=nrows, normalize=True, value_range=(0,1))
     plt.figure(figsize=(4, 4))
     plt.axis("off")
     plt.title(f"Epoch {epoch}")
