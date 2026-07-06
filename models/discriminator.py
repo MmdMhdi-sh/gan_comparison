@@ -29,19 +29,14 @@ class Discriminator(nn.Module):
     def __init__(self):
         super().__init__()
 
-        self.network = nn.Sequential(nn.Linear(784, 1024),
-            nn.LeakyReLU(0.2, inplace=True),
-            nn.Dropout(0.3), 
+        self.network = nn.Sequential(
+            Maxout(784, 256, pieces=5),
+            nn.Dropout(0.5), # 0.5 dropout works exceptionally well with Maxout
 
-            nn.Linear(1024, 512),
-            nn.LeakyReLU(0.2, inplace=True),
-            nn.Dropout(0.3),
+            Maxout(256, 128, pieces=5),
+            nn.Dropout(0.5),
 
-            nn.Linear(512, 256),
-            nn.LeakyReLU(0.2, inplace=True),
-            nn.Dropout(0.3),
-
-            nn.Linear(256, 1)
+            nn.Linear(128, 1)
         )
 
     def forward(self, x):
