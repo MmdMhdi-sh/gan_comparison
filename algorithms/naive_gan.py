@@ -17,15 +17,15 @@ class NaiveGAN(nn.Module):
         initialize_weights(self.generator)
         initialize_weights(self.discriminator)
 
-        self.g_optimizer = optim.SGD(
+        self.g_optimizer = optim.Adam(
             self.generator.parameters(),
             lr=config["learning_rate"],
-            momentum=config["momentum"]
+            betas=(0.5, 0.999)
         )
-        self.d_optimizer = optim.SGD(
+        self.d_optimizer = optim.Adam(
             self.discriminator.parameters(),
             lr=config["learning_rate"],
-            momentum=config["momentum"]
+            betas=(0.5, 0.999)
         )
 
         self.criterion = nn.BCELoss()
@@ -72,6 +72,12 @@ class NaiveGAN(nn.Module):
 
         self.d_optimizer.step()
         
+        print(
+            "-"*50,
+            "\n"
+            f"D(read): {real_preds.mean().item():.4f} "
+            f"D(fake): {fake_preds.mean().item():.4f}"
+        )
 
         return d_loss.item()
 
@@ -118,5 +124,5 @@ class NaiveGAN(nn.Module):
                 z = self.sample_noise(n_samples)
             
             images = self.generator(z)
-            
+
         return images.cpu()
