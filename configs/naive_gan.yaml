@@ -1,13 +1,22 @@
-{
-  "algorithm": "naive_gan",
+algorithm: naive_gan
 
-  "data_dir": "./data",
-  "num_workers": 2,
+data_dir: "./data"
+num_workers: 2
 
-  "latent_dim": 100,
+latent_dim: 100
 
-  "learning_rate": 0.0002,
-  "momentum": 0.5,
-  "batch_size": 64,
-  "epochs": 10
-}
+# optimizer: 
+#   name: adam
+#   lr: 0.0002
+#   betas: [0.5, 0.999]
+#   momentum: 0.9
+
+optimizer:
+  name: sgd
+  lr: 0.01
+  momentum: 0.9
+
+learning_rate: 0.0002,
+momentum: 0.5,
+batch_size: 64,
+epochs: 10

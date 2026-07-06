@@ -2,6 +2,8 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
+from utils.optimizer import build_optimizer
+
 from models.discriminator import Discriminator
 from models.generator import Generator
 from models.weights import initialize_weights
@@ -17,15 +19,14 @@ class NaiveGAN(nn.Module):
         initialize_weights(self.generator)
         initialize_weights(self.discriminator)
 
-        self.g_optimizer = optim.Adam(
+        self.g_optimizer = build_optimizer(
             self.generator.parameters(),
-            lr=config["learning_rate"],
-            betas=(0.5, 0.999)
+            config
         )
-        self.d_optimizer = optim.Adam(
+        
+        self.d_optimizer = build_optimizer(
             self.discriminator.parameters(),
-            lr=config["learning_rate"],
-            betas=(0.5, 0.999)
+            config
         )
 
         self.criterion = nn.BCELoss()
