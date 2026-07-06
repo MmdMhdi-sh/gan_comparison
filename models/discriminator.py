@@ -30,13 +30,10 @@ class Discriminator(nn.Module):
         super().__init__()
 
         self.network = nn.Sequential(
-            Maxout(784, 1024, 3),
+            Maxout(784, 256, 3),
             nn.Dropout(0.5),
 
-            Maxout(1024, 512, 3),
-            nn.Dropout(0.5),
-
-            Maxout(512, 256, 3),
+            Maxout(256, 256, 3),
             nn.Dropout(0.5),
 
             nn.Linear(256, 1),
