@@ -32,7 +32,7 @@ class Discriminator(nn.Module):
         self.network = nn.Sequential(
             # Maxout(784, 256, 3),
             nn.Linear(784, 256),
-            nn.ReLU()
+            nn.ReLU(),
             nn.Dropout(0.5),
 
             # Maxout(256, 256, 3),
