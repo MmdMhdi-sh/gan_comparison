@@ -20,7 +20,7 @@ class DataModule:
             transform=transform
         )
 
-        self.test = datasets.MNIST(
+        self.test_ds = datasets.MNIST(
             root=self.config["data_dir"],
             train=False,
             download=True,
