@@ -16,6 +16,9 @@ class NaiveGAN(nn.Module):
         self.generator = Generator(config).to(device)
         self.discriminator = Discriminator().to(device)
 
+        self.d_steps = config.get("d_steps", 1)
+        self.g_steps = config.get("g_steps", 1)
+
         initialize_weights(self.generator)
         initialize_weights(self.discriminator)
 
@@ -57,12 +60,6 @@ class NaiveGAN(nn.Module):
         z = self.sample_noise(real_images.size(0))
         fake_images = self.generator(z).detach()
 
-        # ---------------------------------------------------------
-        # TEMPORARY DEBUGGING PRINTS FOR NORMALIZATION
-        # ---------------------------------------------------------
-        print(f"DEBUG - Real Images Min: {real_images.min().item():.4f}, Max: {real_images.max().item():.4f}")
-        print(f"DEBUG - Fake Images Min: {fake_images.min().item():.4f}, Max: {fake_images.max().item():.4f}")
-        # ---------------------------------------------------------
 
         real_preds = self.discriminator(real_images)
         real_labels = torch.ones_like(real_preds) * 0.9
@@ -112,13 +109,17 @@ class NaiveGAN(nn.Module):
         return g_loss.item()
 
     def train_step(self, real_images):
-        d_loss = self.update_discriminator(real_images)
+        d_losses = []
+        for _ in range(self.d_steps):
+            d_losses.append(self.update_discriminator(real_images))
 
-        g_loss = self.update_generator(real_images.size(0))
+        g_losses = []
+        for _ in range(self.g_steps):
+            g_losses.append(self.update_generator(real_images.size(0)))
 
         return {
-            "d_loss":d_loss, 
-            "g_loss": g_loss
+            "d_loss": sum(d_losses) / len(d_losses),
+            "g_loss": sum(g_losses) / len(g_losses),
         }
 
     # Generate fake images

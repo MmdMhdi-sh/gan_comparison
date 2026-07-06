@@ -1,5 +1,8 @@
 algorithm: naive_gan
 
+d_steps: 1
+g_steps: 1
+
 data_dir: "./data"
 num_workers: 2
 

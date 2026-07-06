@@ -28,19 +28,20 @@ class Maxout(nn.Module):
 class Discriminator(nn.Module):
     def __init__(self):
         super().__init__()
+        self.input_dropout = nn.Dropout(0.2)
 
         self.network = nn.Sequential(
             Maxout(784, 256, pieces=5),
             nn.Dropout(0.5), # 0.5 dropout works exceptionally well with Maxout
 
-            Maxout(256, 128, pieces=5),
+            Maxout(256, 256, pieces=5),
             nn.Dropout(0.5),
 
-            nn.Linear(128, 1)
+            nn.Linear(256, 1)
         )
 
     def forward(self, x):
         x = x.view(x.size(0), -1)
-
+        x = self.input_dropout(x)
         return self.network(x)
     
