@@ -62,7 +62,7 @@ class NaiveGAN(nn.Module):
 
 
         real_preds = self.discriminator(real_images)
-        real_labels = torch.ones_like(real_preds) * 0.9
+        real_labels = torch.ones_like(real_preds) 
 
         fake_preds = self.discriminator(fake_images)
         target_labels = torch.zeros_like(fake_preds)
