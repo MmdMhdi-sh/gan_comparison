@@ -5,16 +5,16 @@ num_workers: 2
 
 latent_dim: 100
 
-# optimizer: 
-#   name: adam
-#   lr: 0.0002
-#   betas: [0.5, 0.999]
-#   momentum: 0.9
-
-optimizer:
-  name: sgd
-  lr: 0.01
+optimizer: 
+  name: adam
+  lr: 0.0002
+  betas: [0.5, 0.999]
   momentum: 0.9
+
+# optimizer:
+#   name: sgd
+#   lr: 0.01
+#   momentum: 0.9
 
 learning_rate: 0.0002
 momentum: 0.5
