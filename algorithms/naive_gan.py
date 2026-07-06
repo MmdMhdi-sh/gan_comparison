@@ -57,6 +57,13 @@ class NaiveGAN(nn.Module):
         z = self.sample_noise(real_images.size(0))
         fake_images = self.generator(z).detach()
 
+        # ---------------------------------------------------------
+        # TEMPORARY DEBUGGING PRINTS FOR NORMALIZATION
+        # ---------------------------------------------------------
+        print(f"DEBUG - Real Images Min: {real_images.min().item():.4f}, Max: {real_images.max().item():.4f}")
+        print(f"DEBUG - Fake Images Min: {fake_images.min().item():.4f}, Max: {fake_images.max().item():.4f}")
+        # ---------------------------------------------------------
+
         real_preds = self.discriminator(real_images)
         real_labels = torch.ones_like(real_preds) * 0.9
 
