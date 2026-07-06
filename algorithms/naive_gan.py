@@ -74,10 +74,8 @@ class NaiveGAN(nn.Module):
         self.d_optimizer.step()
         
         print(
-            "-"*50,
-            "\n"
-            f"D(read): {real_preds.mean().item():.4f} "
-            f"D(fake): {fake_preds.mean().item():.4f}"
+            f"D(real): {torch.sigmoid(real_preds).mean().item():.4f} "
+            f"D(fake): {torch.sigmoid(fake_preds).mean().item():.4f}"
         )
 
         return d_loss.item()
