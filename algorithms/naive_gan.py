@@ -110,12 +110,13 @@ class NaiveGAN(nn.Module):
         }
 
     # Generate fake images
-    def generate(self, n_samples):
+    def generate(self, z=None, n_samples: int = 16):
         self.generator.eval()
 
         with torch.no_grad():
-            z = self.sample_noise(n_samples)
+            if z is None:
+                z = self.sample_noise(n_samples)
             
             images = self.generator(z)
-            images = images.cpu()
-        return images
+            
+        return images.cpu()
