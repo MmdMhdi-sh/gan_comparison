@@ -33,8 +33,8 @@ class Discriminator(nn.Module):
             Maxout(784, 256, 3),
             nn.Dropout(0.5),
 
-            Maxout(256, 256, 3),
-            nn.Dropout(0.5),
+            # Maxout(256, 256, 3),
+            # nn.Dropout(0.5),
 
             nn.Linear(256, 1),
             nn.Sigmoid()

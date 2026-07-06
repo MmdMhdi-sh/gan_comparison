@@ -78,6 +78,16 @@ def main():
         if (epoch + 1) % 5 == 0 or epoch == 0:
             samples = model.generate(z=fixed_noise, n_samples=16)
             save_image_grid(samples, epoch + 1, out_dir="outputs", nrows=4)
+    
+
+    z1 = torch.randn(1,100,device=device)
+    z2 = torch.randn(1,100,device=device)
+
+    x1 = model.generator(z1)
+    x2 = model.generator(z2)
+
+    print("="*50)
+    print(torch.mean(torch.abs(x1-x2)))
 
 if __name__ == "__main__":
     main()
