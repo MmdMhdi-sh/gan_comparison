@@ -87,7 +87,7 @@ def main():
     x2 = model.generator(z2)
 
     print("="*50)
-    print(torch.mean(torch.abs(x1-x2)))
+    print(f"x1-x2: {torch.mean(torch.abs(x1-x2))}")
 
 if __name__ == "__main__":
     main()
