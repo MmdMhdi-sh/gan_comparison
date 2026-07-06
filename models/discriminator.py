@@ -39,7 +39,7 @@ class Discriminator(nn.Module):
             # nn.Dropout(0.5),
 
             nn.Linear(256, 1),
-            nn.Sigmoid()
+            # nn.Sigmoid()
         )
 
     def forward(self, x):

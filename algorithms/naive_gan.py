@@ -29,7 +29,7 @@ class NaiveGAN(nn.Module):
             config
         )
 
-        self.criterion = nn.BCELoss()
+        self.criterion = nn.BCEWithLogitsLoss()
 
         self.device = device
     
