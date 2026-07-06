@@ -16,7 +16,6 @@ optimizer:
 #   lr: 0.01
 #   momentum: 0.9
 
-learning_rate: 0.0002
 momentum: 0.5
 batch_size: 64
-epochs: 10
+epochs: 100
