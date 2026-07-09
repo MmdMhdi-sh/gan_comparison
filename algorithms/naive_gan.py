@@ -4,7 +4,7 @@ import torch.optim as optim
 
 from utils.optimizer import build_optimizer
 
-from base_gan import BaseGAN
+from algorithms.base_gan import BaseGAN
 from models.discriminator import Discriminator
 from models.generator import Generator
 from models.weights import initialize_weights
@@ -21,7 +21,7 @@ class NaiveGAN(BaseGAN):
 
         self.d_steps = config.get("d_steps", 1)
         self.g_steps = config.get("g_steps", 1)
-        
+
         self.g_optimizer = build_optimizer(
             self.generator.parameters(),
             config
