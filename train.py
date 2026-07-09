@@ -89,8 +89,14 @@ def main():
 
     print("="*50)
     print("Plotting Figures ...")
-    save_plot_path = f'outputs/figures/{config["algorithm"]}_loss.png'
-    plot_history(history, save_plot_path)
+    save_plot_path = f'outputs/figures'
+    plot_history(
+        history, 
+        save_plot_path,
+        groups=[
+        ["d_loss", "g_loss"]
+    ]
+    )
     print(f"Figures Saved at {save_plot_path}")
 
 if __name__ == "__main__":
