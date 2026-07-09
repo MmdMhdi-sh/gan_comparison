@@ -21,4 +21,4 @@ optimizer:
 
 momentum: 0.5
 batch_size: 64
-epochs: 20
+epochs: 50
