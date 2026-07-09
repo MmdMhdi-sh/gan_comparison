@@ -7,6 +7,7 @@ import torch
 
 from tqdm import tqdm
 
+from algorithms import build_model
 from algorithms.naive_gan import NaiveGAN
 from data.datamodule import DataModule
 from utils.configs import load_config
@@ -39,7 +40,7 @@ train_loader = data_module.train_dataloader()
 # =============================================
 # Model
 # =============================================
-model = NaiveGAN(
+model = build_model(
     config=config, 
     device=device
 )
@@ -48,7 +49,8 @@ model = NaiveGAN(
 # Training
 # =============================================
 def main():
-    start_time = time.time()
+    history = {}
+    
     print("=" * 50)
     print(f"Training Starts ...")
     num_epochs = config["epochs"]
@@ -57,23 +59,26 @@ def main():
         range(num_epochs),
         desc="Training"
     ):
-        epoch_d_loss = 0
-        epoch_g_loss = 0
+        start_time = time.time()
+        epoch_losses = {}
         for real_images, _ in train_loader:
             losses = model.train_step(real_images)
 
-            epoch_d_loss += losses["d_loss"]
-            epoch_g_loss += losses["g_loss"]
+            for key, value in losses.items():
+                history.setdefault(key, []).append(value)
 
-        epoch_d_loss /= len(train_loader)
-        epoch_g_loss /= len(train_loader)
+        for key in epoch_losses:
+            epoch_losses[key] /= len(train_loader)
+            history.setdefault(key, []).append(epoch_losses[key])
 
-        print(
-            f"Epoch [{epoch+1}/{num_epochs}] "
-            f"Discriminator Loss: {epoch_d_loss:.4f} "
-            f"Generator Loss: {epoch_g_loss:.4f} "
-            f"Duration: {time.time()-start_time:.2f}"
-        )
+        message = f"Epoch [{epoch+1}/{num_epochs}] "
+
+        for key, value in epoch_losses.items():
+            message += f"{key}: {value:.4f} "
+
+        message += f"Duration: {time.time()-start_time:.2f}s"
+
+        print(message)
 
         if (epoch + 1) % 5 == 0 or epoch == 0:
             samples = model.generate(z=fixed_noise, n_samples=16)
