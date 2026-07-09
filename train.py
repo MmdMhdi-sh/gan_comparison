@@ -10,6 +10,7 @@ from tqdm import tqdm
 from algorithms import build_model
 from algorithms.naive_gan import NaiveGAN
 from data.datamodule import DataModule
+from callbacks.checkpoint import save_checkpoint
 from utils.configs import load_config
 from utils.history import History
 from utils.visualization import save_image_grid, plot_history
@@ -86,10 +87,16 @@ def main():
         if (epoch + 1) % 5 == 0 or epoch == 0:
             samples = model.generate(z=fixed_noise, n_samples=16)
             save_image_grid(samples, epoch + 1, out_dir="outputs", nrows=4)
+            checkpoint_path = f"outputs/{config['algorithm']}/checkpoints"
+            save_checkpoint(
+                model,
+                epoch,
+                checkpoint_path
+            )
 
     print("="*50)
     print("Plotting Figures ...")
-    save_plot_path = f'outputs/figures'
+    save_plot_path = f'outputs/{config["algorithm"]}/plots'
     plot_history(
         history, 
         save_plot_path,
