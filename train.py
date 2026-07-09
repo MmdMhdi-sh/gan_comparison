@@ -93,9 +93,7 @@ def main():
     plot_history(
         history, 
         save_plot_path,
-        groups=[
-        ["d_loss", "g_loss"]
-    ]
+        groups=model.plot_groups
     )
     print(f"Figures Saved at {save_plot_path}")
 

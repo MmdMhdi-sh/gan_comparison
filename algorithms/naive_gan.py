@@ -102,6 +102,12 @@ class NaiveGAN(BaseGAN):
             "d_loss": sum(d_losses) / len(d_losses),
             "g_loss": sum(g_losses) / len(g_losses),
         }
+    
+    @property
+    def plot_groups(self):
+        return [
+            ["d_loss", "g_loss"]
+        ]
 
 # class NaiveGAN(nn.Module):
 #     def __init__(self, config, device):

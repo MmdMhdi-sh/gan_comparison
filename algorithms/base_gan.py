@@ -42,3 +42,7 @@ class BaseGAN(nn.Module):
     @staticmethod
     def build_optimizer(parameters, config):
         return build_optimizer(parameters, config)
+    
+    @property
+    def plot_groups(self):
+        raise NotImplementedError
