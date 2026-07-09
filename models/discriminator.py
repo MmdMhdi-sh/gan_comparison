@@ -32,7 +32,7 @@ class Discriminator(nn.Module):
 
         self.network = nn.Sequential(
             Maxout(784, 256, pieces=5),
-            nn.Dropout(0.5), # 0.5 dropout works exceptionally well with Maxout
+            nn.Dropout(0.5), 
 
             Maxout(256, 256, pieces=5),
             nn.Dropout(0.5),
