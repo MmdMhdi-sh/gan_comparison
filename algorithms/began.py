@@ -76,7 +76,10 @@ class BEGAN(BaseGAN):
         generator_loss.backward()
         self.g_optimizer.step()
 
-        return generator_loss.item()
+        with torch.no_grad():
+            diversity = self.batch_diversity(fake_images).item()
+
+        return generator_loss.item(), diversity
     
     def update_kt(self, real_loss, fake_loss):
         self.kt = self.kt + self.lambda_k * (self.gamma * real_loss - fake_loss)
@@ -85,7 +88,7 @@ class BEGAN(BaseGAN):
     def train_step(self, real_images):
         d_logs = self.update_discriminator(real_images)
 
-        generator_loss = self.update_generator(real_images.size(0))
+        generator_loss, diversity  = self.update_generator(real_images.size(0))
 
         self.update_kt(d_logs["real_loss"], d_logs["fake_loss"])
 
@@ -97,7 +100,8 @@ class BEGAN(BaseGAN):
                 "reconstruction_loss": d_logs["real_loss"],
                 "generator_loss": generator_loss,
                 "M_global": M_global,
-                "kt": self.kt
+                "kt": self.kt,
+                "diversity": diversity
             }
 
     @property
@@ -105,7 +109,8 @@ class BEGAN(BaseGAN):
         return [
             ["reconstruction_loss", "generator_loss"],
             ["kt"],
-            ["M_global"]
+            ["M_global"],
+            ["diversity"]
         ]
     
     @property
@@ -125,3 +130,13 @@ class BEGAN(BaseGAN):
         self.g_optimizer.load_state_dict(checkpoint["g_optimizer"])
         self.d_optimizer.load_state_dict(checkpoint["d_optimizer"])
         self.kt = checkpoint.get("kt", 0.0)
+
+    @staticmethod
+    def batch_diversity(images):
+        # Mean pairwise L1 distance across a batch, flattened per-image.
+        # Higher = more diverse; near-zero = collapse.
+        flat = images.view(images.size(0), -1)
+        diffs = torch.cdist(flat.unsqueeze(0), flat.unsqueeze(0), p=1).squeeze(0)
+        n = images.size(0)
+        # Exclude the zero diagonal (each image vs itself)
+        return diffs.sum() / (n * (n - 1))
