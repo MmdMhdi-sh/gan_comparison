@@ -70,7 +70,7 @@ class BEGAN(BaseGAN):
         fake_images = self.generator(z)
         fake_recon = self.discriminator(fake_images)
 
-        generator_loss = self.reconstruction_loss(fake_images, fake_recon)
+        generator_loss = self.reconstruction_loss(fake_images.detach(), fake_recon)
 
         self.g_optimizer.zero_grad()
         generator_loss.backward()
