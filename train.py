@@ -9,7 +9,6 @@ import torch
 from tqdm import tqdm
 
 from algorithms import build_model
-from algorithms.naive_gan import NaiveGAN
 from data.datamodule import DataModule
 from callbacks.checkpoint import save_checkpoint
 from utils.configs import load_config

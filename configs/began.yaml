@@ -1,0 +1,17 @@
+algorithm: began
+
+data_dir: "./data"
+num_workers: 2
+
+latent_dim: 100
+
+batch_size: 64
+epochs: 50
+
+optimizer:
+  name: adam
+  lr: 0.0001
+  betas: [0.5, 0.999]
+
+gamma: 0.5
+lambda_k: 0.001
