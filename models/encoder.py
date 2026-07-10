@@ -5,6 +5,7 @@ class Encoder(nn.Module):
         super().__init__()
         self.encoder = nn.Sequential(
             nn.Linear(784, 256),
+            nn.ReLU(),
 
             nn.Linear(256, 128),
             nn.ReLU(),
