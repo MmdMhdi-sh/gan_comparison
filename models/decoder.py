@@ -20,9 +20,9 @@ class Decoder(nn.Module):
     
 
 class DecoderConv(nn.Module):
-    def __init__(self, latent_dim=128):
+    def __init__(self):
         super().__init__()
-        self.fc = nn.Linear(latent_dim, 64 * 7 * 7)
+        self.fc = nn.Linear(128, 64 * 7 * 7)
         self.net = nn.Sequential(
             nn.ConvTranspose2d(64, 32, kernel_size=4, stride=2, padding=1),  # 7 -> 14
             nn.ReLU(inplace=True),
