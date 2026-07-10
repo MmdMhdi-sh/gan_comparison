@@ -108,7 +108,34 @@ class NaiveGAN(BaseGAN):
         return [
             ["d_loss", "g_loss"]
         ]
+    
+    @property
+    def checkpoint(self):
+        return {
+            "config": self.config,
+            "generator": self.generator.state_dict(),
+            "discriminator": self.discriminator.state_dict(),
+            "g_optimizer": self.g_optimizer.state_dict(),
+            "d_optimizer": self.d_optimizer.state_dict(),
+        }
 
+    def load_checkpoint(self, checkpoint):
+
+        self.generator.load_state_dict(
+            checkpoint["generator"]
+        )
+
+        self.discriminator.load_state_dict(
+            checkpoint["discriminator"]
+        )
+
+        self.g_optimizer.load_state_dict(
+            checkpoint["g_optimizer"]
+        )
+
+        self.d_optimizer.load_state_dict(
+            checkpoint["d_optimizer"]
+        )
 # class NaiveGAN(nn.Module):
 #     def __init__(self, config, device):
 #         super().__init__()
