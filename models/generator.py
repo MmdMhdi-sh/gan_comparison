@@ -10,19 +10,6 @@ class Generator(nn.Module):
             nn.Linear(1200, 784),
             nn.Sigmoid()
         )
-        # self.network = nn.Sequential(
-        #     nn.Linear(self.latent_dim, 256),
-        #     nn.ReLU(inplace=True),
-
-        #     nn.Linear(256, 512),
-        #     nn.ReLU(inplace=True),
-
-        #     nn.Linear(512, 1024),
-        #     nn.ReLU(inplace=True),
-
-        #     nn.Linear(1024, 784),
-        #     nn.Sigmoid()
-        # )
     
     def forward(self, z):
         # (batch_size, latent_dim) -> (batch_size, 1, 28, 28)
