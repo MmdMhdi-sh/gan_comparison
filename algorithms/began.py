@@ -9,7 +9,7 @@ class BEGAN(BaseGAN):
     def __init__(self, config, device):
         super().__init__(config, device)
 
-        self.discriminator = AutoEncoderConv().to(device)
+        self.discriminator = AutoEncoder().to(device)
 
         initialize_weights(self.generator)
         initialize_weights(self.discriminator)

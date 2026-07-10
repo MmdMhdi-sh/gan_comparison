@@ -8,10 +8,7 @@ class Decoder(nn.Module):
             nn.Linear(128, 256),
             nn.ReLU(),
 
-            nn.Linear(256, 512),
-            nn.ReLU(),
-
-            nn.Linear(512, 784),
+            nn.Linear(256, 784),
             nn.Sigmoid()
         )
 
