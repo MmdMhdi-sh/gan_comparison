@@ -6,7 +6,7 @@ class Generator(nn.Module):
         self.latent_dim = config["latent_dim"]
         self.network = nn.Sequential(
             nn.Linear(self.latent_dim, 1200),
-            nn.ReLU(inplace=True),
+            nn.ELU(inplace=True),
             nn.Linear(1200, 784),
             nn.Sigmoid()
         )
