@@ -6,7 +6,7 @@ class Decoder(nn.Module):
 
         self.decoder = nn.Sequential(
             nn.Linear(128, 256),
-            nn.ReLU(),
+            nn.ELU(inplace=True),
 
             nn.Linear(256, 784),
             nn.Sigmoid()
