@@ -13,5 +13,5 @@ optimizer:
   lr: 0.0001
   betas: [0.5, 0.999]
 
-gamma: 0.7
+gamma: 0.6
 lambda_k: 0.001
