@@ -1,0 +1,18 @@
+algorithm: wgan_gp
+
+data_dir: "./data"
+num_workers: 2
+
+latent_dim: 100
+
+batch_size: 64
+epochs: 50
+
+optimizer:
+  name: adam
+  lr: 0.0001
+  betas: [0.0, 0.9]
+
+
+lambda_gp: 10
+critic_iterations: 5

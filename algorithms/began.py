@@ -11,3 +11,14 @@ class BEGAN(BaseGAN):
             ["kt"],
             ["M_global"]
         ]
+    
+    @property
+    def checkpoint(self):
+        return {
+            "config": self.config,
+            "generator": self.generator.state_dict(),
+            "autoencoder": self.autoencoder.state_dict(),
+            "g_optimizer": self.g_optimizer.state_dict(),
+            "ae_optimizer": self.ae_optimizer.state_dict(),
+            "kt": self.kt,
+        }

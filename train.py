@@ -1,6 +1,7 @@
 # =============================================
 # Imports
 # =============================================
+import argparse
 import time 
 
 import torch
@@ -25,11 +26,24 @@ device = torch.device(
     else "cpu"
 )
 
+def parse_args():
+    parser = argparse.ArgumentParser()
 
-path = "configs/naive_gan.yaml"
-config = load_config(path)
+    parser.add_argument(
+        "--config",
+        type=str,
+        required=True,
+        help="Path to config YAML file."
+    )
+
+    return parser.parse_args()
+
+args = parse_args()
+
+config = load_config(args.config)
+
 print(f"Using {device}\n"
-      f"Config loaded from {path}"
+      f"Config loaded from {args.config}"
 )
 # =============================================
 # Data loaders

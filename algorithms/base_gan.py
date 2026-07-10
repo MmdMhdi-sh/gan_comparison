@@ -1,10 +1,12 @@
+from abc import ABC, abstractmethod
+
 import torch
 import torch.nn as nn
 
 from models.generator import Generator
 from utils.optimizer import build_optimizer
 
-class BaseGAN(nn.Module):
+class BaseGAN(nn.Module, ABC):
     def __init__(self, config, device):
         super().__init__()
 
@@ -45,4 +47,12 @@ class BaseGAN(nn.Module):
     
     @property
     def plot_groups(self):
+        raise NotImplementedError
+    
+    @property
+    def checkpoint(self):
+        raise NotImplementedError
+    
+    @abstractmethod
+    def load_checkpoint(self, checkpoint):
         raise NotImplementedError
