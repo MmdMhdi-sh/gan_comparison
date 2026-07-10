@@ -15,4 +15,4 @@ optimizer:
 
 
 lambda_gp: 10
-critic_iterations: 5
+critic_iterations: 1
