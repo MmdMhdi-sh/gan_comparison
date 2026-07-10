@@ -2,14 +2,14 @@ import torch
 
 from algorithms.base_gan import BaseGAN
 
-from models.autoencoder import AutoEncoder
+from models.autoencoder import AutoEncoder, AutoEncoderConv
 from models.weights import initialize_weights
 
 class BEGAN(BaseGAN):
     def __init__(self, config, device):
         super().__init__(config, device)
 
-        self.discriminator = AutoEncoder().to(device)
+        self.discriminator = AutoEncoderConv().to(device)
 
         initialize_weights(self.generator)
         initialize_weights(self.discriminator)
