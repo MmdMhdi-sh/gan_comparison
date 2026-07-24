@@ -5,7 +5,7 @@ num_workers: 2
 
 latent_dim: 32
 batch_size: 128
-epochs: 100
+epochs: 50
 
 g_optimizer:
   name: adam
@@ -17,7 +17,7 @@ d_optimizer:
   lr: 0.00005
   betas: [0.5, 0.999]
 
-gamma: 0.75
+gamma: 0.85
 lambda_k: 0.001
 
 lr_decay_patience: 10
