@@ -1,21 +1,25 @@
 algorithm: began
 
 data_dir: "./data"
-num_workers: 2
+num_workers: 4
 
-latent_dim: 128
-
-batch_size: 64
+latent_dim: 32
+batch_size: 128
 epochs: 50
 
-optimizer:
+g_optimizer:
   name: adam
-  lr: 0.0001
+  lr: 0.0002
+  betas: [0.5, 0.999]
+
+d_optimizer:
+  name: adam
+  lr: 0.00005
   betas: [0.5, 0.999]
 
 gamma: 0.5
 lambda_k: 0.001
 
-lr_decay_patience: 12
+lr_decay_patience: 10
 lr_decay_factor: 0.5
 lr_decay_threshold: 0.0001

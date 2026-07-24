@@ -3,25 +3,27 @@ import torch
 from algorithms.base_gan import BaseGAN
 
 from models.autoencoder import AutoEncoder, AutoEncoderConv
+from models.generator import GeneratorConv
 from models.weights import initialize_weights
 
 class BEGAN(BaseGAN):
     def __init__(self, config, device):
         super().__init__(config, device)
 
-        self.discriminator = AutoEncoderConv().to(device)
+        self.generator = GeneratorConv(config, n=32).to(device)
+        self.discriminator = AutoEncoderConv(latent_dim=config["latent_dim"], n=32).to(device)
 
         initialize_weights(self.generator)
         initialize_weights(self.discriminator)
 
         self.g_optimizer = self.build_optimizer(
             self.generator.parameters(),
-            config
+            config["g_optimizer"]
         )
 
         self.d_optimizer = self.build_optimizer(
             self.discriminator.parameters(),
-            config
+            config["d_optimizer"]
         )
 
         self.gamma = config["gamma"]

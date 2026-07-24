@@ -23,11 +23,11 @@ class AutoEncoder(nn.Module):
     
 
 class AutoEncoderConv(nn.Module):
-    def __init__(self):
+    def __init__(self, latent_dim=128, n=32):
         super().__init__()
 
-        self.encoder = EncoderConv()
-        self.decoder = DecoderConv()
+        self.encoder = EncoderConv(latent_dim, n)
+        self.decoder = DecoderConv(latent_dim, n)
 
     def forward(self, x):
         h = self.encoder(x)
