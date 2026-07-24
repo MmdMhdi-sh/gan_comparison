@@ -16,12 +16,36 @@ class Encoder(nn.Module):
     def forward(self, x):
         return self.encoder(x)
 
-class GeneratorConv(nn.Module):
-    def __init__(self, config, n=64):
+class EncoderConv(nn.Module):
+    def __init__(self, latent_dim=128, n=64):
         super().__init__()
-        self.latent_dim = config["latent_dim"]
-        self.decoder = DecoderConv(latent_dim=self.latent_dim, n=n)
+        self.net = nn.Sequential(
+            nn.Conv2d(1, n, kernel_size=3, padding=1),
+            nn.ELU(inplace=True),
 
-    def forward(self, z):
-        return self.decoder(z)
+            nn.Conv2d(n, n, kernel_size=3, padding=1),
+            nn.ELU(inplace=True),
+            nn.Conv2d(n, 2 * n, kernel_size=3, padding=1),
+            nn.ELU(inplace=True),
+
+            nn.AvgPool2d(2),  # 28 -> 14
+
+            nn.Conv2d(2 * n, 2 * n, kernel_size=3, padding=1),
+            nn.ELU(inplace=True),
+            nn.Conv2d(2 * n, 3 * n, kernel_size=3, padding=1),
+            nn.ELU(inplace=True),
+
+            nn.AvgPool2d(2),  # 14 -> 7
+
+            nn.Conv2d(3 * n, 3 * n, kernel_size=3, padding=1),
+            nn.ELU(inplace=True),
+            nn.Conv2d(3 * n, 3 * n, kernel_size=3, padding=1),
+            nn.ELU(inplace=True),
+        )
+        self.fc = nn.Linear(3 * n * 7 * 7, latent_dim)
+
+    def forward(self, x):
+        h = self.net(x)
+        h = h.view(h.size(0), -1)
+        return self.fc(h)
 
