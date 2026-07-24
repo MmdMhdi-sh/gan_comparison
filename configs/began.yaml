@@ -16,6 +16,6 @@ optimizer:
 gamma: 0.5
 lambda_k: 0.001
 
-lr_decay_patience: 5
+lr_decay_patience: 12
 lr_decay_factor: 0.5
 lr_decay_threshold: 0.0001

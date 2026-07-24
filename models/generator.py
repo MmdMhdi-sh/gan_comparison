@@ -22,7 +22,10 @@ class GeneratorConv(nn.Module):
         super().__init__()
         self.latent_dim = config["latent_dim"]
 
-        self.fc = nn.Linear(self.latent_dim, 64 * 7 * 7)
+        self.fc = nn.Sequential(
+            nn.Linear(self.latent_dim, 64 * 7 * 7),
+            nn.ReLU(inplace=True)
+        )
         self.net = nn.Sequential(
             nn.ConvTranspose2d(64, 32, kernel_size=4, stride=2, padding=1),  # 7 -> 14
             nn.ReLU(inplace=True),
