@@ -5,7 +5,7 @@ num_workers: 2
 
 latent_dim: 32
 batch_size: 128
-epochs: 50
+epochs: 100
 
 g_optimizer:
   name: adam
