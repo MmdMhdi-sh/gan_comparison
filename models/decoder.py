@@ -17,13 +17,13 @@ class Decoder(nn.Module):
     
 
 class DecoderConv(nn.Module):
-    def __init__(self, latent_dim=128, n=32):
+    def __init__(self, embedding_dim=64, n=64):
         super().__init__()
         self.n = n
-        self.fc = nn.Linear(latent_dim, n * 7 * 7)
+        self.fc = nn.Linear(embedding_dim, n * 2 * 7 * 7)
         self.net = nn.Sequential(
             nn.Upsample(scale_factor=2, mode="nearest"),  # 7 -> 14
-            nn.Conv2d(n, n, kernel_size=3, padding=1),
+            nn.Conv2d(n * 2, n, kernel_size=3, padding=1),
             nn.ELU(inplace=True),
 
             nn.Upsample(scale_factor=2, mode="nearest"),  # 14 -> 28
@@ -33,5 +33,5 @@ class DecoderConv(nn.Module):
 
     def forward(self, h):
         x = self.fc(h)
-        x = x.view(x.size(0), self.n, 7, 7)
+        x = x.view(x.size(0), self.n * 2, 7, 7)
         return self.net(x)

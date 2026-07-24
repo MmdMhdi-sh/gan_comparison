@@ -10,8 +10,8 @@ class BEGAN(BaseGAN):
     def __init__(self, config, device):
         super().__init__(config, device)
 
-        self.generator = GeneratorConv(config, n=32).to(device)
-        self.discriminator = AutoEncoderConv(latent_dim=config["latent_dim"], n=32).to(device)
+        self.generator = GeneratorConv(config, n=64).to(device)
+        self.discriminator = AutoEncoderConv(embedding_dim=config.get("embedding_dim", 64), n=64).to(device)
 
         initialize_weights(self.generator)
         initialize_weights(self.discriminator)

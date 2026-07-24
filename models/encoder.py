@@ -17,16 +17,16 @@ class Encoder(nn.Module):
         return self.encoder(x)
 
 class EncoderConv(nn.Module):
-    def __init__(self, latent_dim=128, n=32):
+    def __init__(self, embedding_dim=64, n=64):
         super().__init__()
         self.net = nn.Sequential(
-            nn.Conv2d(1, n, kernel_size=3, stride=2, padding=1),      # 28 -> 14
+            nn.Conv2d(1, n, kernel_size=3, stride=2, padding=1),       # 28 -> 14
             nn.ELU(inplace=True),
 
-            nn.Conv2d(n, n, kernel_size=3, stride=2, padding=1),      # 14 -> 7
+            nn.Conv2d(n, n * 2, kernel_size=3, stride=2, padding=1),   # 14 -> 7
             nn.ELU(inplace=True),
         )
-        self.fc = nn.Linear(n * 7 * 7, latent_dim)
+        self.fc = nn.Linear(n * 2 * 7 * 7, embedding_dim)
 
     def forward(self, x):
         h = self.net(x)

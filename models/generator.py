@@ -21,7 +21,7 @@ class Generator(nn.Module):
     
 
 class GeneratorConv(nn.Module):
-    def __init__(self, config, n=32):
+    def __init__(self, config, n=64):
         super().__init__()
         self.latent_dim = config["latent_dim"]
         self.n = n
@@ -34,12 +34,12 @@ class GeneratorConv(nn.Module):
             nn.Dropout2d(0.2),
 
             nn.Upsample(scale_factor=2, mode="nearest"),  # 14 -> 28
-            nn.Conv2d(n, n, kernel_size=3, padding=1),
+            nn.Conv2d(n, n // 2, kernel_size=3, padding=1),
             nn.ELU(inplace=True),
             nn.Dropout2d(0.2),
 
-            nn.Conv2d(n, 1, kernel_size=3, padding=1),
-            nn.Sigmoid()
+            nn.Conv2d(n // 2, 1, kernel_size=3, padding=1),
+            nn.Sigmoid()   # keep Sigmoid for now — isolate capacity from the Tanh variable
         )
 
     def forward(self, z):

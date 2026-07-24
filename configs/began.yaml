@@ -4,8 +4,10 @@ data_dir: "./data"
 num_workers: 2
 
 latent_dim: 32
+embedding_dim: 64
+
 batch_size: 128
-epochs: 100
+epochs: 50
 
 g_optimizer:
   name: adam
@@ -24,4 +26,4 @@ lr_decay_patience: 10
 lr_decay_factor: 0.5
 lr_decay_threshold: 0.0001
 
-seed: 123
+seed: 42
