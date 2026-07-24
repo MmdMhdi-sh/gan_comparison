@@ -1,7 +1,7 @@
 algorithm: began
 
 data_dir: "./data"
-num_workers: 4
+num_workers: 2
 
 latent_dim: 32
 batch_size: 128
