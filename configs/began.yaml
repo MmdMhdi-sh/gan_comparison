@@ -22,7 +22,7 @@ d_optimizer:
 gamma: 0.85
 lambda_k: 0.001
 
-lr_decay_patience: 10
+lr_decay_patience: 1000
 lr_decay_factor: 0.5
 lr_decay_threshold: 0.0001
 
