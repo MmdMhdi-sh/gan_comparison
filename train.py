@@ -100,7 +100,7 @@ def main():
         if (epoch + 1) % 5 == 0 or epoch == 0:
             samples = model.generate(z=fixed_noise, n_samples=16)
             save_image_grid(samples, epoch + 1, out_dir="outputs", nrows=4)
-            checkpoint_path = f"outputs/{config['algorithm']}/checkpoints"
+            checkpoint_path = f"outputs/{config['algorithm']}/checkpoints/epoch_{epoch+1}.pt"
             save_checkpoint(
                 model,
                 epoch,
