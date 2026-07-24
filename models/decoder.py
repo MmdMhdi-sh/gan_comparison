@@ -17,18 +17,36 @@ class Decoder(nn.Module):
     
 
 class DecoderConv(nn.Module):
-    def __init__(self):
+    def __init__(self, latent_dim=128, n=64):
         super().__init__()
-        self.fc = nn.Linear(128, 64 * 7 * 7)
+        self.n = n
+        self.fc = nn.Linear(latent_dim, n * 7 * 7)
+
         self.net = nn.Sequential(
-            nn.ConvTranspose2d(64, 32, kernel_size=4, stride=2, padding=1),  # 7 -> 14
-            nn.ReLU(inplace=True),
- 
-            nn.ConvTranspose2d(32, 1, kernel_size=4, stride=2, padding=1),   # 14 -> 28
+            nn.Conv2d(n, n, kernel_size=3, padding=1),
+            nn.ELU(inplace=True),
+            nn.Conv2d(n, n, kernel_size=3, padding=1),
+            nn.ELU(inplace=True),
+
+            nn.Upsample(scale_factor=2, mode="nearest"),  # 7 -> 14
+
+            nn.Conv2d(n, n, kernel_size=3, padding=1),
+            nn.ELU(inplace=True),
+            nn.Conv2d(n, n, kernel_size=3, padding=1),
+            nn.ELU(inplace=True),
+
+            nn.Upsample(scale_factor=2, mode="nearest"),  # 14 -> 28
+
+            nn.Conv2d(n, n, kernel_size=3, padding=1),
+            nn.ELU(inplace=True),
+            nn.Conv2d(n, n, kernel_size=3, padding=1),
+            nn.ELU(inplace=True),
+
+            nn.Conv2d(n, 1, kernel_size=3, padding=1),
             nn.Sigmoid()
         )
- 
+
     def forward(self, h):
         x = self.fc(h)
-        x = x.view(x.size(0), 64, 7, 7)
+        x = x.view(x.size(0), self.n, 7, 7)
         return self.net(x)

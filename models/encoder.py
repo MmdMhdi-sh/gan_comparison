@@ -1,5 +1,7 @@
 import torch.nn as nn
 
+from models.decoder import DecoderConv
+
 class Encoder(nn.Module):
     def __init__(self):
         super().__init__()
@@ -14,21 +16,12 @@ class Encoder(nn.Module):
     def forward(self, x):
         return self.encoder(x)
 
-class EncoderConv(nn.Module):
-    def __init__(self):
+class GeneratorConv(nn.Module):
+    def __init__(self, config, n=64):
         super().__init__()
-        self.net = nn.Sequential(
-            nn.Conv2d(1, 32, kernel_size=4, stride=2, padding=1),   # 28 -> 14
-            nn.ReLU(inplace=True),
- 
-            nn.Conv2d(32, 64, kernel_size=4, stride=2, padding=1),  # 14 -> 7
-            nn.ReLU(inplace=True),
-        )
-        self.fc = nn.Linear(64 * 7 * 7, 128)
- 
-    def forward(self, x):
-        h = self.net(x)
-        h = h.view(h.size(0), -1)
-        return self.fc(h)
+        self.latent_dim = config["latent_dim"]
+        self.decoder = DecoderConv(latent_dim=self.latent_dim, n=n)
 
+    def forward(self, z):
+        return self.decoder(z)
 
