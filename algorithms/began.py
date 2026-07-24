@@ -91,6 +91,8 @@ class BEGAN(BaseGAN):
 
         z = self.sample_noise(batch_size)
 
+        self.set_requires_grad(self.discriminator, False)
+
         fake_images = self.generator(z)
         fake_recon = self.discriminator(fake_images)
 
@@ -100,6 +102,8 @@ class BEGAN(BaseGAN):
         generator_loss.backward()
         self.g_optimizer.step()
 
+        self.set_requires_grad(self.discriminator, True)
+        
         with torch.no_grad():
             diversity = self.batch_diversity(fake_images).item()
 
