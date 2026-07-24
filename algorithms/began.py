@@ -9,7 +9,7 @@ class BEGAN(BaseGAN):
     def __init__(self, config, device):
         super().__init__(config, device)
 
-        self.discriminator = AutoEncoder().to(device)
+        self.discriminator = AutoEncoderConv().to(device)
 
         initialize_weights(self.generator)
         initialize_weights(self.discriminator)
@@ -28,6 +28,30 @@ class BEGAN(BaseGAN):
         self.lambda_k = config["lambda_k"]
 
         self.kt = 0.0
+
+        self.lr_decay_patience = config.get("lr_decay_patience", 5)
+        self.lr_decay_factor = config.get("lr_decay_factor", 0.5)
+        self.lr_decay_threshold = config.get("lr_decay_threshold", 1e-4)
+
+        self.best_M_global = float("inf")
+        self.epochs_since_improvement = 0
+
+    def end_epoch(self, avg_M_global):
+        if avg_M_global < self.best_M_global - self.lr_decay_threshold:
+            self.best_M_global = avg_M_global
+            self.epochs_since_improvement = 0
+        else:
+            self.epochs_since_improvement += 1
+
+        if self.epochs_since_improvement >= self.lr_decay_patience:
+            self._decay_lr()
+            self.epochs_since_improvement = 0
+
+    def _decay_lr(self):
+        for optimizer in (self.g_optimizer, self.d_optimizer):
+            for param_group in optimizer.param_groups:
+                param_group["lr"] *= self.lr_decay_factor
+        print(f"[BEGAN] M_global plateaued — LR decayed by {self.lr_decay_factor}")
 
     @staticmethod
     def reconstruction_loss(x, x_hat):

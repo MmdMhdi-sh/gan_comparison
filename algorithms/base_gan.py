@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 import torch
 import torch.nn as nn
 
-from models.generator import Generator
+from models.generator import Generator, GeneratorConv
 from utils.optimizer import build_optimizer
 
 class BaseGAN(nn.Module, ABC):
@@ -14,7 +14,7 @@ class BaseGAN(nn.Module, ABC):
         self.device = device
         self.latent_dim = config["latent_dim"]
 
-        self.generator = Generator(config).to(device)
+        self.generator = GeneratorConv(config).to(device)
     
     def sample_noise(self, batch_size):
         # (batch_size, latent_dim) samples

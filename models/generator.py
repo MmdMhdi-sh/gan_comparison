@@ -17,3 +17,22 @@ class Generator(nn.Module):
         x = x.view(-1, 1, 28, 28)
         return x
     
+class GeneratorConv(nn.Module):
+    def __init__(self, config):
+        super().__init__()
+        self.latent_dim = config["latent_dim"]
+
+        self.fc = nn.Linear(self.latent_dim, 64 * 7 * 7)
+        self.net = nn.Sequential(
+            nn.ConvTranspose2d(64, 32, kernel_size=4, stride=2, padding=1),  # 7 -> 14
+            nn.ReLU(inplace=True),
+
+            nn.ConvTranspose2d(32, 1, kernel_size=4, stride=2, padding=1),   # 14 -> 28
+            nn.Sigmoid()
+        )
+
+    def forward(self, z):
+        x = self.fc(z)
+        x = x.view(x.size(0), 64, 7, 7)
+        x = self.net(x)
+        return x

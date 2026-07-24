@@ -87,6 +87,9 @@ def main():
             epoch_losses[key] /= len(train_loader)
 
         history.update(epoch_losses)
+        
+        if hasattr(model, "end_epoch"):
+            model.end_epoch(epoch_losses["M_global"])
 
         message = f"Epoch [{epoch+1}/{num_epochs}] "
 
