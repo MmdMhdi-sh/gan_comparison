@@ -11,8 +11,10 @@ from tqdm import tqdm
 from algorithms import build_model
 from data.datamodule import DataModule
 from callbacks.checkpoint import save_checkpoint
+
 from utils.configs import load_config
 from utils.history import History
+from utils.seed import set_seed
 from utils.visualization import save_image_grid, plot_history
 
 # =============================================
@@ -44,6 +46,10 @@ config = load_config(args.config)
 print(f"Using {device}\n"
       f"Config loaded from {args.config}"
 )
+
+# Set seed
+set_seed(config.get("seed", 42))
+
 # =============================================
 # Data loaders
 # =============================================
