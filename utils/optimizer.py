@@ -1,27 +1,27 @@
 import torch.optim as optim
 
-def build_optimizer(parameters, config):
+def build_optimizer(parameters, optimizer_config):
 
-    name = config["optimizer"]["name"].lower()
+    name = optimizer_config["name"].lower()
 
     if name == "adam":
         return optim.Adam(
             parameters,
-            lr=config["optimizer"]["lr"],
-            betas=tuple(config["optimizer"]["betas"])
+            lr=optimizer_config["lr"],
+            betas=tuple(optimizer_config["betas"])
         )
 
     elif name == "sgd":
         return optim.SGD(
             parameters,
-            lr=config["optimizer"]["lr"],
-            momentum=config["optimizer"]["momentum"]
+            lr=optimizer_config["lr"],
+            momentum=optimizer_config["momentum"]
         )
 
     elif name == "rmsprop":
         return optim.RMSprop(
             parameters,
-            lr=config["optimizer"]["lr"]
+            lr=optimizer_config["lr"]
         )
 
     else:
